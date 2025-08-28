@@ -17,16 +17,17 @@ graph TD
     end
 
     subgraph Compute
-        CLICKHOUSE["ClickHouse<br/>(Parquet I/O / Direct writes via S3 using IcebergS3 functions)"]
-        MYSQL["ClickHouse<br/>(CDC using OLake)"]
-        OLAKE["Generic CDC For iceberg tables!!"]
-        SPARK["Direct writes to table from parquet / insert commands"]
+        CLICKHOUSE["ClickHouse"]
+        MYSQL["Mysql"]
+        OLAKE["Olake"]
+        SPARK["Spark"]
     end
 
     MC --> MINIO
     REST --> MINIO
     CLICKHOUSE --> MINIO
     CLICKHOUSE --> REST
+    MYSQL --> OLAKE
     OLAKE --> MINIO
     OLAKE --> REST
     SPARK --> MINIO
@@ -248,6 +249,16 @@ select count(*) from demo.`weather.weather`;
 Now that we have showcased writing to the same iceberg table using both clickhouse and spark. Let's look at another way of writing to the table.
 Using Olake connectors.
 [Olake](https://github.com/datazip-inc/olake) is an open source tool for replicating databases to apache iceberg.
+
+Exec into Mysql container to inspect the tables.
+```shell
+docker exec -it primary_mysql mysql -u root -ppassword
+```
+Select the weather database and query the table:
+```sql
+USE weather;
+SELECT * FROM weather LIMIT 10;
+```
 
 When we fired up the setup.sh script, it created a mysql container with a weather database. With the same schema as the one created above.
 

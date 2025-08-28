@@ -37,7 +37,7 @@ graph TD
 #### Setup
 Note: You can view the s3 directories and folders using minio ui
 ```shell
-http://localhost:9003/login
+http://127.0.0.1:9003/login
 username: minio
 password: ClickHouse_Minio_P@ssw0rd
 ```
